@@ -24,4 +24,5 @@ public class EmployeeDatasetRecord {
     @Lob
     @Column(columnDefinition = "LONGTEXT")
     private String jsonData;
+
 }

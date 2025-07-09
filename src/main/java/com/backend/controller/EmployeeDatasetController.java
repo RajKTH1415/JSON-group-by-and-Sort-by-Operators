@@ -1,5 +1,6 @@
 package com.backend.controller;
 
+import com.backend.exception.BadRequestException;
 import com.backend.model.EmployeeDatasetRecord;
 import com.backend.service.impl.EmployeeDatasetServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -64,7 +65,7 @@ public class EmployeeDatasetController {
             return ResponseEntity.ok(Map.of("sortedRecords", result));
         } else {
             log.warn("Bad request: neither groupBy nor sortBy provided");
-            return ResponseEntity.badRequest().body(Map.of("error", "Provide either groupBy or sortBy"));
+            throw new BadRequestException("Provide either groupBy or sortBy");
         }
     }
 }
