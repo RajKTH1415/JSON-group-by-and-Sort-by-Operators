@@ -1,8 +1,9 @@
 package com.backend.service.impl;
 
 import com.backend.exception.DatasetNotFoundException;
-import com.backend.model.EmployeeDatasetRecord;
-import com.backend.repository.EmployeeDatasetRecordRepository;
+import com.backend.model.DatasetRecord;
+import com.backend.model.DatasetRecord;
+import com.backend.repository.DatasetRecordRepository;
 import com.backend.service.DatasetService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -17,29 +18,29 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class EmployeeDatasetServiceImpl implements DatasetService {
+public class DatasetServiceImpl implements DatasetService {
 
-    private final EmployeeDatasetRecordRepository employeeDatasetRecordRepository;
+    private final DatasetRecordRepository datasetRecordRepository;
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Override
-    public EmployeeDatasetRecord insertRecord(String datasetName, Map<String, Object> json) throws JsonProcessingException {
+    public DatasetRecord insertRecord(String datasetName, Map<String, Object> json) throws JsonProcessingException {
         String rowJson = mapper.writeValueAsString(json);
-        EmployeeDatasetRecord record = EmployeeDatasetRecord.builder()
+        DatasetRecord record = DatasetRecord.builder()
                 .datasetName(datasetName)
                 .jsonData(rowJson)
                 .build();
-        return employeeDatasetRecordRepository.save(record);
+        return datasetRecordRepository.save(record);
     }
 
     @Override
     public Map<String, List<Map<String, Object>>> queryGroupBy(String datasetName, String groupBy) throws JsonProcessingException {
-        List<EmployeeDatasetRecord> records = employeeDatasetRecordRepository.findByDatasetName(datasetName);
+        List<DatasetRecord> records = datasetRecordRepository.findByDatasetName(datasetName);
         if (records.isEmpty()) throw new DatasetNotFoundException("No records found for dataset: " + datasetName);
 
         List<Map<String, Object>> recordList = new ArrayList<>();
 
-        for (EmployeeDatasetRecord record : records) {
+        for (DatasetRecord record : records) {
             Map<String, Object> map = mapper.readValue(record.getJsonData(), new TypeReference<>() {
             });
             recordList.add(map);
@@ -51,10 +52,10 @@ public class EmployeeDatasetServiceImpl implements DatasetService {
 
     @Override
     public List<Map<String, Object>> querySortBy(String datasetName,   String sortBy, String order) throws JsonProcessingException {
-        List<EmployeeDatasetRecord> records = employeeDatasetRecordRepository.findByDatasetName(datasetName);
+        List<DatasetRecord> records = datasetRecordRepository.findByDatasetName(datasetName);
         List<Map<String, Object>> recordList = new ArrayList<Map<String, Object>>();
 
-        for (EmployeeDatasetRecord record : records) {
+        for (DatasetRecord record : records) {
             Map<String, Object> map = mapper.readValue(record.getJsonData(), new TypeReference<Map<String, Object>>() {});
             recordList.add(map);
         }

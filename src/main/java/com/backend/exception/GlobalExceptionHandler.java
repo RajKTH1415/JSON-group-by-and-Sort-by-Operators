@@ -57,6 +57,16 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.BAD_REQUEST, "Bad request", ex);
     }
 
+//    @ExceptionHandler(BadRequestException.class)
+//    public ResponseEntity<Map<String, Object>> handleBadRequest(BadRequestException ex) {
+//        return ResponseEntity
+//                .status(HttpStatus.BAD_REQUEST)
+//                .body(Map.of(
+//                        "message", ex.getMessage(),
+//                        "status", HttpStatus.BAD_REQUEST.value()
+//                ));
+//    }
+
     private ResponseEntity<?> buildResponse(HttpStatus status, String message, Exception ex) {
         log.error("Exception caught: ", ex);
         Map<String, Object> res = new HashMap<>();

@@ -1,8 +1,10 @@
 package com.backend.controller;
 
 import com.backend.exception.BadRequestException;
-import com.backend.model.EmployeeDatasetRecord;
-import com.backend.service.impl.EmployeeDatasetServiceImpl;
+import com.backend.model.DatasetRecord;
+
+import com.backend.service.impl.DatasetServiceImpl;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,9 +22,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Slf4j
 @Tag(name = "Employee Dataset controller", description = "APIs for managing and querying dynamic employee dataset records")
-public class EmployeeDatasetController {
+public class DatasetController {
 
-    private final EmployeeDatasetServiceImpl datasetService;
+    private final DatasetServiceImpl datasetService;
 
     @PostMapping("/{datasetName}/record")
     @Operation(summary = "Insert a new record into dataset",
@@ -32,7 +34,7 @@ public class EmployeeDatasetController {
         log.info("Inserting record into dataset: {}", datasetName);
         log.debug("Record content: {}", json);
 
-        EmployeeDatasetRecord saved = datasetService.insertRecord(datasetName, json);
+        DatasetRecord saved = datasetService.insertRecord(datasetName, json);
 
         Map<String, Object> response = new LinkedHashMap<>();
         response.put("message", "Record added successfully");
