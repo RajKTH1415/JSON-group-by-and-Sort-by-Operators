@@ -7,6 +7,8 @@ import com.backend.service.impl.DatasetServiceImpl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +31,11 @@ public class DatasetController {
     @PostMapping("/{datasetName}/record")
     @Operation(summary = "Insert a new record into dataset",
             description = "Adds a new JSON-formatted record into the specified dataset. The record is dynamically structured and saved with a unique identifier.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Record successfully inserted"),
+            @ApiResponse(responseCode = "400", description = "Invalid record input"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     public ResponseEntity<?> insertRecord(@PathVariable String datasetName,
                                           @RequestBody Map<String, Object> json) throws JsonProcessingException {
         log.info("Inserting record into dataset: {}", datasetName);
@@ -50,6 +57,11 @@ public class DatasetController {
             summary = "Query dataset records",
             description = "Performs dynamic querying on the specified dataset. Supports grouping by a field (`groupBy`) or sorting by a field (`sortBy`) with optional order (`asc` or `desc`)."
     )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Query executed successfully"),
+            @ApiResponse(responseCode = "400", description = "Missing query parameters"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     public ResponseEntity<?> query(@PathVariable String datasetName,
                                    @RequestParam(required = false) String groupBy,
                                    @RequestParam(required = false) String sortBy,
